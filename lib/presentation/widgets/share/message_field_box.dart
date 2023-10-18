@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class MessageFieldBox extends StatelessWidget {
-  const MessageFieldBox({super.key});
+
+  final ValueChanged<String> onValue;
+
+  const MessageFieldBox({super.key, required this.onValue});
 
   @override
   Widget build(BuildContext context) {
@@ -17,15 +20,15 @@ class MessageFieldBox extends StatelessWidget {
     final inputDecoration = InputDecoration(
 
         enabledBorder: outlineInputBorder,
-        hintText: 'End your message with a "?"',
+        hintText: 'Ingrese su mensaje...',
         focusedBorder: outlineInputBorder,
         filled: true,
         suffixIcon: IconButton(
           icon: const Icon(Icons.send_outlined),
           onPressed: (){
             final textValue=textController.value.text;
-            print('Button: $textValue');
             textController.clear();
+            onValue(textValue);
           },
         )
     );
@@ -38,8 +41,8 @@ class MessageFieldBox extends StatelessWidget {
       controller: textController,
       decoration: inputDecoration,
       onFieldSubmitted: (value) {
-        print('changed: $value');
         textController.clear();
+        onValue(value);
         focusNode.requestFocus();//para qe continue apareciendo el teclado despues de
                                   // darle done o chek
       },
